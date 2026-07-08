@@ -1,6 +1,6 @@
 #コマの管理
 
-from cell import Cell
+from models.cell import Cell
 
 class Board:
     DIRECTIONS = [
@@ -33,7 +33,7 @@ class Board:
 
 
 
-    def put_stone(self, row, col, stone):#石を置く
+    def put_stone(self, row: int, col: int, stone: int) -> bool:#石を置く
         if not self.can_put(row, col, stone):
             return False
         
@@ -41,28 +41,24 @@ class Board:
         self.flip_stones(row, col,stone)
         return True
     
-    def is_inside(self, row,col):#盤面内か
+    def is_inside(self, row: int,col: int) -> bool:#盤面内か
         if 0 <=row < 8 and 0 <= col < 8:
             return True
         return False
     
-    def get_stone(self, row, col):#石を取得
+    def get_stone(self, row: int, col: int) -> int | None:#指定したマスの石を取得
         if not self.is_inside(row, col):
             return None
         return self.cells[row][col].stone
 
-    #def get_right_stone(self, row, col):#右隣を取得
-    #    return self.get_stone(
-    #        row, col + 1
-    #    )
 
 
-    def get_next_stone(self, row, col, dr, dc):
+    def get_next_stone(self, row: int, col: int, dr: int, dc: int) -> int | None:#隣の石に移動してget_stoneへ
         return self.get_stone(
             row + dr,col + dc
         )
     
-    def has_opponent_in_direction(self, row, col, dr, dc, stone):
+    def has_opponent_in_direction(self, row: int, col: int, dr: int, dc:int, stone:int) -> bool:#相手の石を挟めるか
         row += dr
         col += dc
         if not self.is_inside(row,col):
@@ -85,7 +81,7 @@ class Board:
 
         return next_stone == stone
     
-    def can_put(self, row, col, stone):
+    def can_put(self, row: int, col: int, stone:int) -> bool:#そのマスに石を置けるか
         if self.get_stone(row,col) != Cell.EMPTY:
             return False
         
@@ -95,12 +91,12 @@ class Board:
         
         return False
     
-    def update_can_put(self, stone):
+    def update_can_put(self, stone: int) -> None:#すべてのマスをチェック
         for row in range(8):
             for col in range(8):
                 self.cells[row][col].can_put = self.can_put(row, col, stone)
 
-    def flip_in_direction(self, row, col, dr, dc, stone):#ひっくり返す
+    def flip_in_direction(self, row: int, col:int, dr: int, dc:int, stone:int) -> None:#ひっくり返す
         if not self.has_opponent_in_direction(row, col, dr, dc, stone):
             return
         row += dr
@@ -111,19 +107,19 @@ class Board:
             row += dr
             col += dc
 
-    def flip_stones(self, row, col, stone):
+    def flip_stones(self, row:int, col:int, stone:int) -> None:
         for dr, dc in Board.DIRECTIONS:
             self.flip_in_direction(row, col, dr, dc, stone)
 
-    def has_valid_move(self, stone):
+    def has_valid_move(self, stone: int) -> bool:#置けるマスがあるか確認
         for row in range(8):
             for col in range(8):
                 if self.can_put(row, col, stone):
                     return True
         return False
     
-    def count_stones(self):
-        blacl = 0
+    def count_stones(self) -> tuple[int, int]:
+        black = 0
         white = 0
 
         for row in range(8):

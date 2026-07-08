@@ -11,7 +11,7 @@ class Cell:
         self.can_put = False
 
     @staticmethod
-    def get_opponent(stone):
+    def get_opponent(stone: int):
         if stone == Cell.BLACK:
             return Cell.WHITE
         return Cell.BLACK
