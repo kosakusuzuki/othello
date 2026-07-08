@@ -1,6 +1,3 @@
-#マスの管理
-
-
 class Cell:
     EMPTY = 0
     BLACK = 1
