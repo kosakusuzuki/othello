@@ -1,5 +1,5 @@
 from models.cell import Cell
-from board import Board
+from models.board import Board
 
 board = Board()
 turn = Cell.BLACK
