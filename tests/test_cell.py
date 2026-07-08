@@ -1,4 +1,3 @@
-
 from models.cell import Cell
 
 def test_cell_init():
@@ -6,7 +5,6 @@ def test_cell_init():
 
     assert cell.stone == Cell.EMPTY
     assert not cell.can_put
-
 
 def test_get_opponent():
     assert Cell.get_opponent(Cell.BLACK) == Cell.WHITE
